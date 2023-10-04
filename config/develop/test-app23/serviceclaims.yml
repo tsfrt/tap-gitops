@@ -1,0 +1,39 @@
+apiVersion: kapp.k14s.io/v1alpha1
+kind: Config
+waitRules:
+- conditionMatchers:
+  - type: ServiceAvailable
+    status: "False"
+    failure: true
+  - type: ServiceAvailable
+    status: "True"
+    success: true
+  resourceMatchers:
+  - apiVersionKindMatcher:
+      apiVersion: servicebinding.io/v1alpha3
+      kind: ServiceBinding
+---
+apiVersion: servicebinding.io/v1alpha3
+kind: ServiceBinding
+metadata:
+  name: test-app23-oracle-binding
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"carto.run/v1alpha1","kind":"Workload","metadata":{"annotations":{},"labels":{"app.kubernetes.io/part-of":"test-app23","apps.tanzu.vmware.com/workload-type":"web"},"name":"test-app23","namespace":"develop"},"spec":{"build":{"env":[{"name":"NODE_OPTIONS","value":""}]},"params":[{"name":"gitops_server_address","value":"https://github.com/"},{"name":"gitops_repository_owner","value":"tsfrt"},{"name":"gitops_repository_name","value":"tap-gitops"}],"serviceClaims":[{"name":"oracle-binding","ref":{"apiVersion":"services.apps.tanzu.vmware.com/v1alpha1","kind":"ResourceClaim","name":"external-oracle-db-claim"}}],"source":{"git":{"ref":{"branch":"main"},"url":"https://github.com/tsfrt/test-app23"}}}}
+    kapp.k14s.io/change-group: servicebinding.io/ServiceBindings
+  labels:
+    app.kubernetes.io/part-of: test-app23
+    apps.tanzu.vmware.com/workload-type: web
+    app.kubernetes.io/component: run
+    carto.run/workload-name: test-app23
+spec:
+  name: oracle-binding
+  service:
+    apiVersion: services.apps.tanzu.vmware.com/v1alpha1
+    kind: ResourceClaim
+    name: external-oracle-db-claim
+  workload:
+    apiVersion: serving.knative.dev/v1
+    kind: Service
+    name: test-app23
+
