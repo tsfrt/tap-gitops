@@ -29,7 +29,7 @@ spec:
         carto.run/workload-name: test-app23
     spec:
       containers:
-      - image: harbor.build.h2o-2-18171.h2o.vmware.com/builds/workloads/test-app23-develop@sha256:03720552de46254c52f41d709b71fd2d9b6180c35ad247dd1a302de91bd46e7d
+      - image: harbor.build.h2o-2-18171.h2o.vmware.com/builds/workloads/test-app23-develop@sha256:083ebfefb6d9072ca6e4586ce83d6e5f26d49d9e67c2c49da3f4cfeee76ca183
         name: workload
         resources: {}
         securityContext:
